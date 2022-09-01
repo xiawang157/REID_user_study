@@ -107,10 +107,21 @@
         dataimage[p].index = p
     }
 
+    sortedIndexArray = new Array(dataimage.length);
+    for(var i = 0; i < sortedIndexArray.length; i++){
+        sortedIndexArray[i] = i;
+    }
+    sortedIndexArray.sort(randomSort);
+    console.log(sortedIndexArray)
+
+    function randomSort(a, b){
+        return Math.random() - 0.5;
+    }
+
 
     $("#Submit").click(function(d,i){
         start();
-        var questionIndex=dataimage[clickcount]
+        var questionIndex=dataimage[sortedIndexArray[clickcount]]
         d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
         d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question;
     })
@@ -158,7 +169,7 @@
             return;
         }
         else{
-            var questionIndex=dataimage[clickcount];
+            var questionIndex=dataimage[sortedIndexArray[clickcount]];
             console.log("questionIndex");
             console.log(questionIndex);
             if(questionIndex.flag==0){
@@ -185,7 +196,7 @@
     function getCoordinates(el){
         var x = parseInt(document.getElementById('xxx').value)-el.offsetLeft;
         var y = parseInt(document.getElementById('yyy').value)-el.offsetTop;
-        var questionIndex=dataimage[clickcount];
+        var questionIndex=dataimage[sortedIndexArray[clickcount]];
         console.log(questionIndex);
         if(questionIndex.flag==0){
             if(isInside(x, y, questionIndex.X1, questionIndex.Y1, questionIndex.X2, questionIndex.Y2)){
@@ -215,7 +226,7 @@
     }
 
     function getAnswer(el){
-        var questionIndex=dataimage[clickcount];
+        var questionIndex=dataimage[sortedIndexArray[clickcount]];
         var checked = $("input[name='radio_4']:checked").length
         if(checked == 1){
             var answeroption = ""
