@@ -242,6 +242,11 @@
             console.log(answeroption);
             console.log(answeroptiontext);
             questionIndex.answer=answeroption
+            if(questionIndex.an==answeroption){
+                questionIndex.correct=1
+            }else{
+                questionIndex.correct=-1
+            }
 
             end_time = new Date();
             var interval = end_time.getTime() - start_time.getTime();
@@ -262,8 +267,37 @@
             re += dataimage[i].time;
             re +=",";
         }
-        document.getElementById("result_p").value += "Embed:"
+        document.getElementById("result_p").value += "Time:"
         document.getElementById("result_p").value += re;
+
+
+
+        var re = "";
+        for(var i = 0; i <dataimage.length ; i++){
+            re += dataimage[i].image;
+            re +=",";
+        }
+        document.getElementById("result_p").value += "image:"
+        document.getElementById("result_p").value += re;
+
+
+        var re = "";
+        for(var i = 0; i <dataimage.length ; i++){
+            re += dataimage[i].correct;
+            re +=",";
+        }
+        document.getElementById("result_p").value += "correct:"
+        document.getElementById("result_p").value += re;
+
+        var re = "";
+        for(var i = 18; i <24 ; i++){
+            re += dataimage[i].answer;
+            re +=",";
+        }
+        document.getElementById("result_p").value += "answer:"
+        document.getElementById("result_p").value += re;
+
+
         console.log(dataimage);
     }
 
