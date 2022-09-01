@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>User Study</title>
+</head>
+<body>
+<script src="vue.min.js"></script>
+<script type="text/javascript" src="js/d3.v4.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+
+
+
+
+<!--鼠标位置-->
+<input id="xxx" type="hidden" />  <input id="yyy" type="hidden" />
+<div id="test">
+    <!--问题-->
+    <div id = "div_question" >
+        <a>Task : 请仔细阅览该示意图</a>
+        <button class = "normal" id = "Submit"  name="Submit" value=Submit >开始测试</button>
+    </div>
+
+    <!--图片-->
+    <div id = "div_image">
+        <img id = "image" src="image/test.jpg" onclick="getCoordinates(this);" />
+        <img id = "query" src="image/query.jpg" style="float:left;display:none;height:300px"/>
+    </div>
+
+    <div id = "div_answer" style="display:none">
+        <text id = "questiontext" >question:</text>
+        <input class = "options" type="checkbox" name="radio_4" value="A"><text id = "optiontext" value = "A">A</text>
+        <input class = "options" type="checkbox" name="radio_4" value="B"><text id = "optiontext" value = "B">B</text>
+        <input class = "options" type="checkbox" name="radio_4" value="C"><text id = "optiontext" value = "C">C</text>
+        <button class = "normal" id = "Submit1"  name="Submit1" value=Submit onclick="getAnswer(this);">Submit</button>
+    </div>
+
+</div>
+
+
+
+<div id="result" style="display:none">
+    测试结果(秒):<br/>
+    <hr>
+    <textarea rows="10" cols="80" id="result_p"></textarea>
+    <hr>
+    <br/><b>亲~<br/>Another Small Request~~<br/>请将如上分割线区域内的内容复制到下面的表单中并提交:)<br/></b>
+    <br/>
+    <iframe src="https://forms.gle/1eTZVbYMEiFBxbAN7" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+</div>
+
+
+<style>
+    .normal {
+        background-color: rgb(75, 142, 75);
+        color: #fff;
+    }
+    body{
+        font-size:30px;
+        background-color: rgb(157, 157, 158);
+    }
+</style>
+</body>
+</html>
+<script>
+
+    var start_time;
+    var end_time;
+    var clickcount = 0
+    var path = "image/"
+
+    document.onmousemove = mouseMove;
+
+
+    var dataimage = [
+        { "index":0,"image" : "hotrect_5.jpg","question":"Task:请点击图片中与其他方格颜色偏差最大的方格","X1":70, "Y1": 70, "X2":122, "Y2": 123, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "hotrect_7.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":118, "Y1": 25, "X2":171, "Y2": 75, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "hotrect_14.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":171, "Y1": 24, "X2":225, "Y2": 75, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "hotrect_19.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":117, "Y1": 70, "X2":169, "Y2": 220, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "hotrect_20.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":66, "Y1": 123, "X2":122, "Y2": 173, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "hotrect_24.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":170, "Y1": 123, "X2":222, "Y2": 173, "time":-1,"flag":0,"correct":0},
+        { "index":0,"image" : "image_5.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":250, "Y1": 285, "X2":425, "Y2": 500, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "image_7.jpg","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":439, "Y1": 54, "X2":619, "Y2": 275, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "image_14.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":493, "Y1": 42, "X2":630, "Y2": 219, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "image_19.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":283, "Y1": 181, "X2":395, "Y2": 605, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "image_20.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":156, "Y1": 332, "X2":272, "Y2": 471, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "image_24.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":348, "Y1": 277, "X2":449, "Y2": 400, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_5.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":213, "Y1": 51, "X2":261, "Y2": 389, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_7.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":100, "Y1": 44, "X2":137, "Y2": 337, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_14.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":160, "Y1": 56, "X2":205, "Y2": 388, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_19.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":249, "Y1": 30, "X2":288, "Y2": 298, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_20.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":358, "Y1": 34, "X2":390, "Y2": 289, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "pixel_24.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":382, "Y1": 24, "X2":409, "Y2": 224, "time":-1,"flag":0,"correct":0,"query":1},
+
+        { "index":0,"image" : "overview_1.1.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview_1.2.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","X1":0,"time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview_1.3.jpg","question":"Task: 请点击图片中更接近正样本的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview_2.1.jpg","question":"Task: 请点击图片中更接近正样本的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview_2.2.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"B","answer":"-1"},
+        { "index":0,"image" : "overview_2.3.jpg","question":"Task: 请点击图片中”rank后移“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"C","answer":"-1"},
+        { "index":0,"image" : "path_1.jpg","question":"Task: 请点击图片中”内部颜色差异“最大的节点","X1":72, "Y1": 324, "X2":179, "Y2": 419, "time":-1,"flag":0,"correct":0,"answer":"-1"},
+        { "index":0,"image" : "path_2.jpg","question":"Task: 请点击图片中”内部颜色差异“最大的节点","X1":335, "Y1": 137, "X2":439, "Y2": 230, "time":-1,"flag":0,"correct":0,"answer":"-1"}
+    ]
+
+
+    for(var p = 0; p <dataimage.length; p++ ){
+        dataimage[p].index = p
+    }
+
+
+    $("#Submit").click(function(d,i){
+        start();
+        var questionIndex=dataimage[clickcount]
+        d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+        d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question;
+    })
+
+
+
+    function isInside(x, y, z1, z2, z3, z4) {
+        x1 = Math.min(z1, z3);
+        x2 = Math.max(z1, z3);
+        y1 = Math.min(z2, z4);
+        y2 = Math.max(z2, z4);
+        if ((x1 <= x ) && ( x <= x2) && (y1 <= y) && (y <= y2)) {
+            console.log(x1 + "," + x + "," + x2);
+            console.log(y1 + "," + y + "," + y2);
+            return true;
+        } else {
+            return false;
+        };
+    };
+
+    function mousePosition(ev){
+        if(ev.pageX || ev.pageY){
+            return {x:ev.pageX, y:ev.pageY};
+        }
+        return {
+            x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+            y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+        };
+    }
+
+    function mouseMove(ev){
+        ev = ev || window.event;
+        var mousePos = mousePosition(ev);
+        document.getElementById('xxx').value = mousePos.x;
+        document.getElementById('yyy').value = mousePos.y;
+    }
+
+    function start(){
+        start_time = new Date();
+    }
+
+    function next(){
+        if(clickcount >= dataimage.length){
+            showResult();
+            return;
+        }
+        else{
+            var questionIndex=dataimage[clickcount];
+            console.log("questionIndex");
+            console.log(questionIndex);
+            if(questionIndex.flag==0){
+                document.getElementById("div_answer").style.display='none';
+                d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+                d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question
+                if(questionIndex.query==1){
+                    document.getElementById("query").style.display='';
+                }else{
+                    document.getElementById("query").style.display='none';
+                }
+            }
+            else if(questionIndex.flag==1){
+                document.getElementById("query").style.display='none';
+                document.getElementById("div_answer").style.display='';
+                d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+                d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question
+            }
+
+
+        }
+    }
+
+    function getCoordinates(el){
+        var x = parseInt(document.getElementById('xxx').value)-el.offsetLeft;
+        var y = parseInt(document.getElementById('yyy').value)-el.offsetTop;
+        var questionIndex=dataimage[clickcount];
+        console.log(questionIndex);
+        if(questionIndex.flag==0){
+            if(isInside(x, y, questionIndex.X1, questionIndex.Y1, questionIndex.X2, questionIndex.Y2)){
+                questionIndex.correct=1
+                end_time = new Date();
+                var interval = end_time.getTime() - start_time.getTime();
+                questionIndex.time = interval/1000;
+                start_time = new Date();
+                clickcount++;
+                next();
+            }
+            else{
+                questionIndex.correct=-1
+                end_time = new Date();
+                var interval = end_time.getTime() - start_time.getTime();
+                questionIndex.time = interval/1000;
+                start_time = new Date();
+                clickcount++;
+                next();
+                // return;
+
+            }
+        }
+        else if(questionIndex.flag==1){
+        }
+
+    }
+
+    function getAnswer(el){
+        var questionIndex=dataimage[clickcount];
+        var checked = $("input[name='radio_4']:checked").length
+        if(checked == 1){
+            var answeroption = ""
+            var answeroptiontext = ""
+            var checkbox = document.getElementsByName("radio_4")
+            for(var i = 0 ; i <checkbox.length ; i ++ ){
+                if(document.getElementsByName("radio_4")[i].checked){
+                    answeroption = document.getElementsByName("radio_4")[i].value
+                    answeroptiontext = d3.selectAll("#optiontext")._groups[0][i].innerHTML
+                }
+                document.getElementsByName("radio_4")[i].checked = false
+            }
+            console.log(answeroption);
+            console.log(answeroptiontext);
+            questionIndex.answer=answeroption
+
+            end_time = new Date();
+            var interval = end_time.getTime() - start_time.getTime();
+            questionIndex.time = interval/1000;
+            start_time = new Date();
+            clickcount++;
+            next();
+        }
+    }
+
+    function showResult(){
+        document.getElementById("test").style.display='none';
+        document.getElementById("result").style.display='';
+        document.getElementById("result_p").value = "";
+        //document.getElementById("result").innerHTML = "测试结果(秒):<br/>";
+        var re = "";
+        for(var i = 0; i <dataimage.length ; i++){
+            re += dataimage[i].time;
+            re +=",";
+        }
+        document.getElementById("result_p").value += "Embed:"
+        document.getElementById("result_p").value += re;
+        console.log(dataimage);
+    }
+
+</script>
