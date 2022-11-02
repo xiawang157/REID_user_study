@@ -17,14 +17,15 @@
 <div id="test">
     <!--问题-->
     <div id = "div_question" >
-        <a>Task : 请仔细阅览该示意图!!!</a>
+        <a>Task : 请仔细阅览该示意图</a>
         <button class = "normal" id = "Submit"  name="Submit" value=Submit >开始测试</button>
     </div>
 
     <!--图片-->
     <div id = "div_image">
-        <img id = "image" src="image/test.jpg" onclick="getCoordinates(this);" />
-        <img id = "query" src="image/query.jpg" style="float:left;display:none;height:300px"/>
+        <img id = "color" height="50" src="image/color.jpg" style="float:left;display:none;" />
+        <img id = "image" src="image/test.png" onclick="getCoordinates(this);" />
+        <img id = "query" src="" style="float:left;display:none;height:300px"/>
     </div>
 
     <div id = "div_answer" style="display:none">
@@ -44,9 +45,9 @@
     <hr>
     <textarea rows="10" cols="80" id="result_p"></textarea>
     <hr>
-    <br/><b>亲~<br/>Another Small Request~~<br/>请将如上分割线区域内的内容复制到下面的表单中并提交:)<br/></b>
-    <br/>
-    <iframe src="https://forms.gle/1eTZVbYMEiFBxbAN7" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+<!--    <br/><b>亲~<br/>Another Small Request~~<br/>请将如上分割线区域内的内容复制到下面的表单中并提交:)<br/></b>-->
+<!--    <br/>-->
+<!--    <iframe src="https://forms.gle/1eTZVbYMEiFBxbAN7" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>-->
 </div>
 
 
@@ -57,7 +58,7 @@
     }
     body{
         font-size:30px;
-        background-color: rgb(157, 157, 158);
+        /*background-color: rgb(157, 157, 158);*/
     }
 </style>
 </body>
@@ -70,36 +71,49 @@
     var path = "image/"
 
     document.onmousemove = mouseMove;
+    p="pw"
 
 
     var dataimage = [
-        { "index":0,"image" : "hotrect_5.jpg","question":"Task:请点击图片中与其他方格颜色偏差最大的方格","X1":70, "Y1": 70, "X2":122, "Y2": 123, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "hotrect_7.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":118, "Y1": 25, "X2":171, "Y2": 75, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "hotrect_14.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":171, "Y1": 24, "X2":225, "Y2": 75, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "hotrect_19.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":117, "Y1": 70, "X2":169, "Y2": 220, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "hotrect_20.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":66, "Y1": 123, "X2":122, "Y2": 173, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "hotrect_24.jpg","question":"Task: 请点击图片中与其他方格颜色偏差最大的方格","X1":170, "Y1": 123, "X2":222, "Y2": 173, "time":-1,"flag":0,"correct":0},
-        { "index":0,"image" : "image_5.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":250, "Y1": 285, "X2":425, "Y2": 500, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "image_7.jpg","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":439, "Y1": 54, "X2":619, "Y2": 275, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "image_14.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":493, "Y1": 42, "X2":630, "Y2": 219, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "image_19.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":283, "Y1": 181, "X2":395, "Y2": 605, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "image_20.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":156, "Y1": 332, "X2":272, "Y2": 471, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "image_24.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":348, "Y1": 277, "X2":449, "Y2": 400, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_5.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":213, "Y1": 51, "X2":261, "Y2": 389, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_7.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":100, "Y1": 44, "X2":137, "Y2": 337, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_14.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":160, "Y1": 56, "X2":205, "Y2": 388, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_19.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":249, "Y1": 30, "X2":288, "Y2": 298, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_20.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":358, "Y1": 34, "X2":390, "Y2": 289, "time":-1,"flag":0,"correct":0,"query":1},
-        { "index":0,"image" : "pixel_24.jpg","question":"Task: 请点击在右图中与左边行人外观最不相似的图像条","X1":382, "Y1": 24, "X2":409, "Y2": 224, "time":-1,"flag":0,"correct":0,"query":1},
+        { "index":0,"image" : "h0.png","question":"Task:请点击图片中最接近正样本的方格","X1":26, "Y1": 75, "X2":77, "Y2": 124, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h1.png","question":"Task: 请点击图片中最接近负样本的方格","X1":74, "Y1": 75, "X2":125, "Y2": 120, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h2.png","question":"Task: 请点击图片中最接近正样本的方格","X1":125, "Y1": 72, "X2":174, "Y2": 123, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h3.png","question":"Task: 请点击图片中最接近正样本的方格","X1":73, "Y1": 26, "X2":123, "Y2": 73, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h4.png","question":"Task: 请点击图片中最接近正样本的方格","X1":19, "Y1": 23, "X2":68, "Y2": 71, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h5.png","question":"Task: 请点击图片中最接近正样本的方格","X1":23, "Y1": 75, "X2":72, "Y2": 126, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h6.png","question":"Task:请点击图片中最接近正样本的方格","X1":20, "Y1": 19, "X2":70, "Y2": 67, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h7.png","question":"Task: 请点击图片中最接近正样本的方格","X1":76, "Y1": 127, "X2":125, "Y2": 175, "time":-1,"flag":"0","correct":0,"color":1},
+        { "index":0,"image" : "h8.png","question":"Task: 请点击图片中最接近正样本的方格","X1":224, "Y1": 130, "X2":274, "Y2": 172, "time":-1,"flag":"0","correct":0,"color":1},
 
-        { "index":0,"image" : "overview_1.1.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
-        { "index":0,"image" : "overview_1.2.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","X1":0,"time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
-        { "index":0,"image" : "overview_1.3.jpg","question":"Task: 请点击图片中更接近正样本的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
-        { "index":0,"image" : "overview_2.1.jpg","question":"Task: 请点击图片中更接近正样本的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
-        { "index":0,"image" : "overview_2.2.jpg","question":"Task: 请点击图片中”内部颜色差异“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"B","answer":"-1"},
-        { "index":0,"image" : "overview_2.3.jpg","question":"Task: 请点击图片中”rank后移“更大的节点所在的区域","time":-1,"flag":1,"correct":0,"an":"C","answer":"-1"},
-        { "index":0,"image" : "path_1.jpg","question":"Task: 请点击图片中”内部颜色差异“最大的节点","X1":72, "Y1": 324, "X2":179, "Y2": 419, "time":-1,"flag":0,"correct":0,"answer":"-1"},
-        { "index":0,"image" : "path_2.jpg","question":"Task: 请点击图片中”内部颜色差异“最大的节点","X1":335, "Y1": 137, "X2":439, "Y2": 230, "time":-1,"flag":0,"correct":0,"answer":"-1"}
+
+        { "index":0,"image" : "i0.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":67, "Y1": 399, "X2":315, "Y2": 706, "time":-1,"flag":0,"im":"q0.png","correct":0,"query":1},
+        { "index":0,"image" : "i1.png","question":"Task: 请点击在右图中与左边行人外观最不相似的行人","X1":339, "Y1": 399, "X2":588, "Y2": 707, "time":-1,"flag":0,"im":"q1.png","correct":0,"query":1},
+        { "index":0,"image" : "i2.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":618, "Y1": 395, "X2":868, "Y2": 703, "time":-1,"flag":0,"im":"q2.png","correct":0,"query":1},
+        { "index":0,"image" : "i3.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":214, "Y1": 40, "X2":372, "Y2": 224, "time":-1,"flag":0,"im":"q3.png","correct":0,"query":1},
+        { "index":0,"image" : "i4.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":57, "Y1": 52, "X2":264, "Y2": 300, "time":-1,"flag":0,"im":"q4.png","correct":0,"query":1},
+        { "index":0,"image" : "i5.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":40, "Y1": 240, "X2":199, "Y2": 423, "time":-1,"flag":0,"im":"q5.png","correct":0,"query":1},
+        { "index":0,"image" : "i6.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":38, "Y1": 43, "X2":171, "Y2": 195, "time":-1,"flag":0,"im":"q6.png","correct":0,"query":1},
+        { "index":0,"image" : "i7.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":153, "Y1": 298, "X2":258, "Y2": 422, "time":-1,"flag":0,"im":"q7.png","correct":0,"query":1},
+        { "index":0,"image" : "i8.png","question":"Task: 请点击在右图中与左边行人外观最相似的行人","X1":470, "Y1": 290, "X2":577, "Y2": 416, "time":-1,"flag":0,"im":"q8.png","correct":0,"query":1},
+
+
+        { "index":0,"image" : p+"0.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":102, "Y1": 46, "X2":139, "Y2": 341, "time":-1,"flag":0,"im":"qp0.png","correct":0,"query":1},
+        { "index":0,"image" : p+"1.png","question":"Task: 请点击在右图中与左边图像条外观最不相似的图像条","X1":171, "Y1": 37, "X2":211, "Y2": 335, "time":-1,"flag":0,"im":"qp1.png","correct":0,"query":1},
+        { "index":0,"image" : p+"2.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":219, "Y1": 32, "X2":263, "Y2": 334, "time":-1,"flag":0,"im":"qp2.png","correct":0,"query":1},
+        { "index":0,"image" : p+"3.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":66, "Y1": 35, "X2":105, "Y2": 335, "time":-1,"flag":0,"im":"qp3.png","correct":0,"query":1},
+        { "index":0,"image" : p+"4.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":30, "Y1": 27, "X2":66, "Y2": 327, "time":-1,"flag":0,"im":"qp4.png","correct":0,"query":1},
+        { "index":0,"image" : p+"5.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":173, "Y1": 30, "X2":207, "Y2": 330, "time":-1,"flag":0,"im":"qp5.png","correct":0,"query":1},
+        { "index":0,"image" : p+"6.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":21, "Y1": 26, "X2":51, "Y2": 268, "time":-1,"flag":0,"im":"qp6.png","correct":0,"query":1},
+        { "index":0,"image" : p+"7.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":487, "Y1": 32, "X2":523, "Y2": 335, "time":-1,"flag":0,"im":"qp7.png","correct":0,"query":1},
+        { "index":0,"image" : p+"8.png","question":"Task: 请点击在右图中与左边图像条外观最相似的图像条","X1":596, "Y1": 29, "X2":632, "Y2": 337, "time":-1,"flag":0,"im":"qp8.png","correct":0,"query":1},
+
+
+        { "index":0,"image" : "overview1_1.png","question":"Task: 请点击图片中正样本最多的区域","time":-1,"flag":1,"correct":0,"an":"C","answer":"-1"},
+        { "index":0,"image" : "overview1_2.png","question":"Task:  请点击图片中”内部颜色差异“更大的区域","X1":0,"time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview1_3.png","question":"Task: 请点击图片中后移最多样本所在的区域","time":-1,"flag":1,"correct":0,"an":"C","answer":"-1"},
+        { "index":0,"image" : "overview2_1.png","question":"Task: 请点击图片中”内部颜色差异“更大的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview2_2.png","question":"Task: 请点击图片中”内部颜色差异“更大的区域","time":-1,"flag":1,"correct":0,"an":"A","answer":"-1"},
+        { "index":0,"image" : "overview2_3.png","question":"Task: 请点击图片中前移最多样本所在的区域","time":-1,"flag":1,"correct":0,"an":"C","answer":"-1"}
     ]
 
 
@@ -111,19 +125,21 @@
     for(var i = 0; i < sortedIndexArray.length; i++){
         sortedIndexArray[i] = i;
     }
-    sortedIndexArray.sort(randomSort);
-    console.log(sortedIndexArray)
-
-    function randomSort(a, b){
-        return Math.random() - 0.5;
-    }
+    // sortedIndexArray.sort(randomSort);
+    // console.log(sortedIndexArray)
+    //
+    // function randomSort(a, b){
+    //     return Math.random() - 0.5;
+    // }
 
 
     $("#Submit").click(function(d,i){
         start();
         var questionIndex=dataimage[sortedIndexArray[clickcount]]
-        d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+        d3.select("#image").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
         d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question;
+        document.getElementById("color").style.display='';
+
     })
 
 
@@ -174,18 +190,23 @@
             console.log(questionIndex);
             if(questionIndex.flag==0){
                 document.getElementById("div_answer").style.display='none';
-                d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+                d3.select("#image").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
                 d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question
                 if(questionIndex.query==1){
+                    d3.select("#query").attr("src", path + questionIndex.im);
                     document.getElementById("query").style.display='';
+                    document.getElementById("color").style.display='none';
+
+
                 }else{
                     document.getElementById("query").style.display='none';
+                    document.getElementById("color").style.display='';
                 }
             }
             else if(questionIndex.flag==1){
                 document.getElementById("query").style.display='none';
                 document.getElementById("div_answer").style.display='';
-                d3.select("img").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
+                d3.select("#image").attr("src", path + questionIndex.image);//.attr("height","40%").attr("width","40%");
                 d3.select("#div_question")._groups[0][0].innerHTML = questionIndex.question
             }
 
@@ -290,7 +311,7 @@
         document.getElementById("result_p").value += re;
 
         var re = "";
-        for(var i = 18; i <24 ; i++){
+        for(var i = dataimage.length-6; i <dataimage.length ; i++){
             re += dataimage[i].answer;
             re +=",";
         }
